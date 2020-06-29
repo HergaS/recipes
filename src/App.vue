@@ -5,6 +5,8 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
+    <hr class="my-5">
+    <div id="edamam-badge" data-color="transparent"></div>
   </div>
 </template>
 

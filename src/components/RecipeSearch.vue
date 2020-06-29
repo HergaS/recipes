@@ -1,12 +1,12 @@
 <template>
-  <div class="recipe-search container-fluid">
+  <div id="recipe-search" class="container-fluid">
     <form class="row">
       <input v-model="searchValue" type="text" class="form-control col-sm-12 col-md-8">
       <button class="btn btn-primary" @click.prevent="searchData">Search</button>
     </form>
     <div class="container-fluid" v-for="(rec, index) in apiResponse" :key="index">
-      <div class="row my-3">
-        <img :src="rec.recipe.image" alt="" class="col-6">
+      <div class="row my-3" @click="selectRecipe(rec.recipe)">
+        <img :src="rec.recipe.image" alt="" class="col-4">
         <div class="col-6 my-auto">{{ rec.recipe.label }}</div>
       </div>
     </div>
@@ -27,7 +27,7 @@ export default {
   methods: {
     searchData() {
       if (this.searchValue !== '') {
-        this.$http.get(`https://api.edamam.com/search?q=${this.searchValue}&app_id=${this.appID}&app_key=${this.appKey}&from=0&to=5`)
+        this.$http.get(`https://api.edamam.com/search?q=${this.searchValue}&app_id=${this.appID}&app_key=${this.appKey}&from=0&to=20`)
           .then(response => {
             this.apiResponse = response.body.hits
             console.log(this.apiResponse)
@@ -35,6 +35,9 @@ export default {
             console.log(error)
         })
       }
+    },
+    selectRecipe(rec) {
+      this.$store.commit("selectRecipe", rec)
     }
   }
 }
@@ -44,22 +47,13 @@ export default {
 <style scoped lang="scss">
 .row{
   margin: 2%;
+  cursor: pointer;
 }
 .btn{
   margin: 0 2%;
 }
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+#recipe-search{
+  max-height: 100vh !important;
+  overflow: auto;
 }
 </style>
