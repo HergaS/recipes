@@ -5,8 +5,6 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
-    <hr class="my-5">
-    <div id="edamam-badge" data-color="transparent"></div>
   </div>
 </template>
 
@@ -17,6 +15,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  z-index: 100;
 }
 
 #nav {
@@ -31,4 +30,12 @@
     }
   }
 }
+#edamam-badge {
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  bottom: 0;
+}
 </style>
+
+<!--<div id="edamam-badge" data-color="transparent"></div>-->

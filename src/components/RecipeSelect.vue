@@ -1,13 +1,11 @@
 <template>
-  <div v-if="!showRecipe"><img alt="Vue logo" src="../assets/logo.png"></div>
-  <div v-else class="recipe-select container-fluid">
-    <h2 class="my-5">{{ selectRecipe.label }}</h2>
-    <div class="row my-5"><img class="col-6 offset-3 " alt="recipe" :src="selectRecipe.image"></div>
-    <ul class="row text-left">
-      <li class="col-4 offset-1 my-2" v-for="(ingredient,index) in selectRecipe.ingredientLines" :key="index">
-        {{ ingredient }}
-      </li>
-    </ul>
+  <div class="row">
+    <div class="col-4 offset-1 recipe-box my-2" v-for="(rec, index) in apiResponse" :key="index">
+      <div class="row my-3" @click="selectRecipe(rec.recipe)">
+        <img :src="rec.recipe.image" alt="" class="col-4">
+        <div class="col-6 my-auto"><h4>{{ rec.recipe.label }}</h4></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -18,15 +16,20 @@ export default {
   name: 'RecipeSelect',
   data () {
     return {
-      showRecipe: false,
-      selectRecipe: {}
+      apiResponse: []
     }
   },
-  computed: mapState(['selectedRecipe']),
+  computed: mapState(['searchResponse']),
   watch: {
-    selectedRecipe(val) {
-      this.selectRecipe = this.$store.getters.getRecipe
-      this.showRecipe = true
+    searchResponse(val) {
+      this.apiResponse = this.$store.getters.getSearchResponse
+    }
+  },
+  methods: {
+    selectRecipe(rec) {
+      this.$store.commit("selectRecipe", rec)
+      this.$store.commit("showRecipe", true)
+      this.$store.commit("showSearch", false)
     }
   }
 }
@@ -35,5 +38,15 @@ export default {
 <style scoped lang="scss">
 .row{
   margin: 2%;
+  cursor: pointer;
+}
+.recipe-box {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+}
+.recipe-box:hover {
+  box-shadow: 10px 4px 8px 5px rgba(0, 0, 0, 0.2), 10px 6px 20px 10px rgba(0, 0, 0, 0.19);
 }
 </style>
